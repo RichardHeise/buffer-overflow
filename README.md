@@ -2,12 +2,12 @@
 
 ### Overflow no bogdb.elf
 
-- Criar uma string usando msf-patten_create -l 50
+- Criar uma string usando ````msf-patten_create -l 50````
 - Usar essa string de entrada para o buffer
-- Ao dar Segmentation Fault, sabemos que talvez escrevemos um endereço inexistente no escopo do programa no endereço de retorno da função e, portanto, RIP estará apontando para um endereço inválido, o que causa o erro.
+- Ao dar **Segmentation Fault**, sabemos que talvez escrevemos um endereço inexistente no escopo do programa no endereço de retorno da função e, portanto, RIP estará apontando para um endereço inválido, o que causa o erro.
 - Executar com gdb o elf a fim de identificar nosso offset.
 - Ao dar segfault, usamos o comando _info registers_ no gdb para verificar que o rbp foi preenchido com algo. Podemos, então, printar o valor do rsp, pois o valor dele é o endereço onde começam os 6 bytes de retorno que queremos preencher com um apontador para nosso shellcode no futuro. 
-- Alimentar para a função msf-pattern_offset -q o valor de rsp, com isso conseguimos o offset até o retorno. No caso do bogdb.elf esse valor é de 21 bytes.
+- Alimentar para a função ````msf-pattern_offset -q```` o valor de rsp, com isso conseguimos o offset até o retorno. No caso do bogdb.elf esse valor é de 21 bytes.
 - Criar um script em python para escrever um payload binário em uma file a fim de fornecer essa file como entrada para o bogdb. Esse payload segue o seguinte formato 
 ````import struct
 buf = b"\x41" * 21
